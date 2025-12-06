@@ -32,7 +32,7 @@ const Login = () => {
 		
 
 		try {
-			const res = await axios.post(`${conf.backendApIUrl}/auth/login`, formData)
+			const res = await axios.post(`${conf.backendApIUrl}/api/v1/auth/login`, formData)
 			// ajay@gmail.com 
 			// ajay123
 

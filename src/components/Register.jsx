@@ -39,7 +39,7 @@ const Register = () => {
 		try {
 			console.log("3");
 
-			const res = await axios.post(`${conf.backendApIUrl}/auth/register`, formData)
+			const res = await axios.post(`${conf.backendApIUrl}/api/v1/auth/register`, formData)
 			console.log("4");
 			alert(res.data.message)
 			if (res.data.status == 'success') {
