@@ -3,7 +3,7 @@ import axios from "axios";
 import { marked } from "marked";
 import conf from '../config/config';
 
-// const API_Key = 'AIzaSyD_qLfv8Uyfep3VThmkj6r_lBH42F_wpGU'
+
 let API_Key = conf.geminiApiKey
 // console.log("Check key:", API_Key);
 
