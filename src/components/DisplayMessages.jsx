@@ -19,27 +19,22 @@ const DisplayMessages = () => {
 	const messages = useSelector(state => state.messages.value)
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
-	
+
 
 	const token = useSelector(state => state.auth.token)
-	console.log(token);
-	
+
 
 	useEffect(() => {
-		if (!chatId) return		// <-- FIX
+		if (!chatId) return		
 
 		(async () => {
 			const usersChats = await getChatOfUser()
-			// New
+		
 			dispatch(setChats(usersChats))
 
 			const userMessages = await getMessagesOfChat(chatId)
-			// console.log("Fetched Messages:", userMessages);
-
-			// FIX: message API sometimes returned false → now safe
 			dispatch(setMessages(userMessages || []));
 
-			// navigate('/new-chat')
 		})()
 	}, [chatId])
 
@@ -56,13 +51,10 @@ const DisplayMessages = () => {
 		try {
 			let currentChatId = chatId;
 
-			// New 
-			// ---------------- FIX 2: Create new chat correctly ----------------
 			if (!currentChatId) {
 
 				const newChatObj = await createNewChatinDB(userMsg);
 
-				// FIX: fetch full chat list instead of setChats([newChatObj])
 				const updatedChatList = await getChatOfUser();
 				dispatch(setChats(updatedChatList));
 
@@ -70,8 +62,6 @@ const DisplayMessages = () => {
 				navigate(`/${currentChatId}`);
 			}
 
-			// New
-			// ---------------- FIX 3: Immediate UI update for user message ----------------
 			dispatch(addMessage({
 				text: userMsg,
 				isGeminiResponse: false,
@@ -81,10 +71,7 @@ const DisplayMessages = () => {
 			// Store user message in DB
 			await createNewMessageinDB(userMsg, currentChatId, false);
 
-			// New
-			// ---------------- FIX 4: AI answer safely handled ----------------
 			const answer = await getGeminiResponse(userMsg);
-			// const htmlAns = marked(answer);
 			const htmlAns = answer;
 
 			dispatch(addMessage({
@@ -120,7 +107,7 @@ const DisplayMessages = () => {
 											<div className="mr-2 flex justify-start items-start bg-gradient-to-r from-pink-500 to-violet-500 p-1 rounded-full my-10">
 												<RiGeminiLine className=" text-2xl " />
 											</div>
-										)	: null
+										) : null
 									}
 									{
 										msg.isGeminiResponse ?
@@ -148,7 +135,7 @@ const DisplayMessages = () => {
 			{/* Input Section */}
 			<div className=' w-full  flex justify-center '>
 
-				<form onSubmit={handleSubmit} className='w-full  flex justify-center  items-center gap-4'>
+				<form onSubmit={handleSubmit} className='w-full  flex justify-center  items-center gap-4 p-3'>
 					<input
 						type="text"
 						name='userInput'
@@ -160,7 +147,9 @@ const DisplayMessages = () => {
 						})}
 						value={formData.userInput}
 					/>
-					<button type='submit' className='text-2xl cursor-pointer'><IoSend /></button>
+					<button type='submit' className='text-2xl cursor-pointer'>
+						<IoSend />
+					</button>
 				</form>
 			</div>
 
@@ -169,77 +158,3 @@ const DisplayMessages = () => {
 }
 
 export default DisplayMessages
-
-
-
-
-
-
-
-
-
-
-
-
-
-	// <div className='relative flex flex-col h-screen border'>
-		// 	<div className='h-[80%] p-4 overflow-y-auto' >
-		// 		{
-		// 			messages.length > 0 ?
-		// 				messages.map((msg) => {
-		// 					return (
-		// 						<div
-		// 							className={` flex items-center text-xl  ${msg.isGeminiResponse ? '' : 'justify-end rounded-4xl'}`}
-		// 							key={msg._id}
-		// 						>
-		// 							{
-		// 								msg.isGeminiResponse ? (
-		// 									<div className="mr-2 flex justify-center items-center bg-gradient-to-r from-pink-500 to-violet-500 p-1 rounded-full ">
-		// 										<RiGeminiLine className=" text-2xl " />
-		// 									</div>
-		// 								)
-		// 									: null
-		// 							}
-		// 							{
-		// 								msg.isGeminiResponse ?
-		// 									<div
-		// 										key={msg._id}
-		// 										className={`mb-2 text-xl `}
-		// 										dangerouslySetInnerHTML={{ __html: msg.text }}
-		// 									/>
-		// 									:
-		// 									<p className='bg-gray-300 mb-2 text-black max-w-96 p-2 px-6 rounded-4xl rounded-tr-md rounded-bl-md '>
-		// 										{msg.text}
-		// 									</p>
-		// 							}
-		// 						</div>
-		// 					)
-		// 				})
-		// 				:
-		// 				<h2 className='text-center font-bold text-2xl border multicolor-text '>
-		// 					Hello, {user.name || 'User'}
-		// 				</h2>
-		// 		}
-		// 		{isLoading && (<h2 className="text-2xl">Loading...</h2>)}
-		// 	</div >
-
-		// 	{/* Input Section */}
-		// 	<div className='h-[20%] border border-green-600 flex justify-center items-start'>
-
-		// 		<form onSubmit={handleSubmit} className='h-full flex justify-center items-center gap-3'>
-		// 			<input
-		// 				type="text"
-		// 				name='userInput'
-		// 				id={newId}
-		// 				className='text-xl border w-full p-2 rounded-lg min-w-200'
-		// 				placeholder='Ask Gemini'
-		// 				onChange={(e) => setFormData({
-		// 					userInput: e.target.value
-		// 				})}
-		// 				value={formData.userInput}
-		// 			/>
-		// 			<button type='submit' className='text-2xl cursor-pointer'><IoSend /></button>
-		// 		</form>
-		// 	</div>
-
-		// </div >

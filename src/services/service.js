@@ -5,7 +5,7 @@ import conf from '../config/config';
 
 
 let API_Key = conf.geminiApiKey
-// console.log("Check key:", API_Key);
+let BackendApIUrl = conf.backendApIUrl
 
 const ai = new GoogleGenAI({ apiKey: API_Key });
 
@@ -14,13 +14,9 @@ export const getGeminiResponse = async (question) => {
         model: 'gemini-2.5-flash',
         contents: question,
     });
-    console.log("getGeminiResponse:  response ----->", response);
-    const output = response.text;  // <-- FIX: updated for new API
-    console.log("getGeminiResponse:  response ----->", response.text);
+    const output = response.text;  
     const parsedResponse = await marked.parse(output)
-    console.log("getGeminiResponse:  parsedResponse ----->", parsedResponse);
     return parsedResponse;
-    // return output
 }
 
 export const createNewChatinDB = async (name) => {
@@ -41,12 +37,11 @@ export const createNewChatinDB = async (name) => {
     }
 
     try {
-        const res = await axios.post(`${conf.backendApIUrl}/api/v1/chats/create-chat`, data, config);
+        const res = await axios.post(`${BackendApIUrl}/api/v1/chats/create-chat`, data, config);
 
         if (res.data.status == 'success') {
             return res.data.data;
         } else {
-            // console.log(res.data.message)
             return false;
         }
     } catch (err) {
@@ -55,14 +50,43 @@ export const createNewChatinDB = async (name) => {
     }
 }
 
+export const renameChatinDB = async (id, name) => {
+    let token = localStorage.getItem('token');
+    let user = JSON.parse(localStorage.getItem('user'));
+
+    if (!token || !user) return false;
+
+    let config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+        },
+    }
+
+    let data = {
+        id,
+        name,
+    }
+
+    try {
+
+        const res = await axios.put(`${BackendApIUrl}/api/v1/chats/rename-chat`, data, config)
+
+        if (res.data.status == 'success') {
+            return res.data.data;
+        } else {
+            return false;
+        }
+
+    } catch (error) {
+        return false;
+    }
+}
+
 export const createNewMessageinDB = async (text, chatId, isGeminiResponse) => {
 
-    // console.log("createNewMessageinDB:  Text ----->", text);
-    // console.log("createNewMessageinDB:  chatId ----->", chatId);
-    // console.log("createNewMessageinDB:  isGeminiResponse ----->", isGeminiResponse);
-
+  
     if (!chatId) {
-        console.log("ERROR: chatId missing");
         return false;
     }
 
@@ -76,19 +100,17 @@ export const createNewMessageinDB = async (text, chatId, isGeminiResponse) => {
         },
     }
 
-    let data = { text, chatId, isGeminiResponse }        // <-- FIX
+    let data = { text, chatId, isGeminiResponse }     
 
     try {
-        const res = await axios.post(`${conf.backendApIUrl}/api/v1/messages/create-message`, data, config);
+        const res = await axios.post(`${BackendApIUrl}/api/v1/messages/create-message`, data, config);
 
         if (res.data.status == 'success') {
             return res.data.data;
         } else {
-            // console.log(res.data.message)
             return false;
         }
     } catch (err) {
-        console.log('ERROR: ' + err.message)
         return false;
     }
 }
@@ -105,14 +127,13 @@ export const getChatOfUser = async (text, chatId, isGeminiResponse) => {
     }
 
     try {
-        const res = await axios.get(`${conf.backendApIUrl}/api/v1/chats/get-chats`, config);
+        const res = await axios.get(`${BackendApIUrl}/api/v1/chats/get-chats`, config);
         if (res.data.status == 'success') {
             return res.data.data;
         } else {
             return false;
         }
     } catch (err) {
-        console.log('ERROR: ' + err.message)
         return false;
     }
 }
@@ -121,10 +142,7 @@ export const getMessagesOfChat = async (chatId) => {
 
     let token = localStorage.getItem('token');
 
-    // OLD
-    // if (!token) return false;
 
-    // New
     if (!token) return [];
 
     let config = {
@@ -134,7 +152,7 @@ export const getMessagesOfChat = async (chatId) => {
     }
 
     try {
-        const res = await axios.get(`${conf.backendApIUrl}/api/v1/messages/get-all-messages/${chatId}`, config);
+        const res = await axios.get(`${BackendApIUrl}/api/v1/messages/get-all-messages/${chatId}`, config);
 
         if (res.data.status == 'success') {
             return res.data.data;
@@ -142,7 +160,32 @@ export const getMessagesOfChat = async (chatId) => {
             return false;
         }
     } catch (err) {
-        console.log('ERROR: ' + err.message)
+        return false;
+    }
+}
+
+export const deleteChatAndMessagesinDB = async (chatId) => {
+
+    let token = localStorage.getItem('token');
+
+    if (!token) return [];
+
+    let config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }
+
+    try {
+        const res = await axios.delete(`${BackendApIUrl}/api/v1/chats/delete-chat/${chatId}`, config);
+
+        if (res.data.status == 'success') {
+            
+            return res.data.data;
+        } else {
+            return false;
+        }
+    } catch (err) {
         return false;
     }
 }

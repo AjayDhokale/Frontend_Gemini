@@ -4,7 +4,3 @@ const conf = {
 }
 
 export default conf
-
-// console.log("Backend URL:", import.meta.env.VITE_BACKEND_API_URL);
-// console.log("geminiApiKey:", conf.geminiApiKey);
-// console.log("Backend URL:", conf.backendApIUrl);

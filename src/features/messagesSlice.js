@@ -10,7 +10,6 @@ const messageSlice = createSlice({
                         state.value.push(action.payload)
                 },
                 setMessages: (state, action) => {
-                        // console.log(action.payload)
                         state.value = [ ...action.payload]
                 }
         }

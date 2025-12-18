@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { setUserData } from '../features/authSlice'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { getChatOfUser } from '../services/service'
 import { setChats } from '../features/chatSlice'
@@ -29,12 +29,10 @@ const Login = () => {
 
 	const handleSubmitForm = async (e) => {
 		e.preventDefault()
-		
+
 
 		try {
 			const res = await axios.post(`${conf.backendApIUrl}/api/v1/auth/login`, formData)
-			// ajay@gmail.com 
-			// ajay123
 
 			alert(res.data.message)
 
@@ -53,54 +51,57 @@ const Login = () => {
 				dispatch(setChats(usersChats))
 				navigate('/new-chat')
 
-			} else{
+			} else {
 				navigate('/login')
 			}
 
 		} catch (err) {
-			console.error('Error: '+ err.message);
-			
+			console.error('Error: ' + err.message);
+
 		}
 
 
-		// post req to validate user
 	}
 
 	return (
-		<div className='flex justify-center items-center h-screen'>
-			<form action="" onSubmit={handleSubmitForm} className='shadow-[0_0_10px_rgba(128,128,128)]  p-5 w-80 h-120 flex justify-between items-center flex-col'>
 
-				<h1 className='multicolor-text h-13 font-bold text-4xl '>Login</h1>
+		<div className='flex justify-center items-center h-screen bg-[#121212] text-white'>
+			<form
+				onSubmit={handleSubmitForm}
+				className=' bg-[#1f1f1f] border border-gray-700  rounded-xl  w-96 p-8 shadow-lg'>
+				<h1 className="text-center text-4xl mb-5 font-serif font-semibold text-blue-600">Login Form</h1>
 
-				<div className=''>
-					<label htmlFor="" className='text-gray-700'>Enter email</label>
-					<br />
+				<div className='mb-3'>
+					<label className='block text-lg mb-1 font-serif '>Email:<br /></label>
 					<input
 						type="email"
 						name='email'
-						className='text-xl border-2 rounded-lg p-2 mb-6'
-						placeholder='abc@gmail.com'
-						value={formData.email}
+						placeholder='Enter Email'
+						className='w-full px-3 py-2 rounded-md bg-[#2a2a2a] border border-gray-600 focus:outline-none'
 						onChange={handleChange}
+						value={formData.email}
 					/>
 				</div>
-
-				<div className=''>
-					<label htmlFor="" className='text-gray-700'>Enter password</label>
-					<br />
+				<div className='mb-3'>
+					<label className='block text-lg mb-1 font-serif '>Password:<br /></label>
 					<input
 						type="password"
 						name='password'
-						className='text-xl border-2 rounded-lg p-2 mb-6'
-						placeholder='*********'
-						value={formData.password}
+						placeholder='Enter Password'
+						className='w-full px-3 py-2 rounded-md bg-[#2a2a2a] border border-gray-600 focus:outline-none'
 						onChange={handleChange}
+						value={formData.password}
 					/>
 				</div>
+				<div className='mb-3 flex justify-center mt-5'>
+					<button
+						type="submit"
+						className='bg-blue-600 hover:bg-blue-700 px-4 py-2 font-serif  text-2xl rounded cursor-pointer'>
+						Login
+					</button>
 
-				<div className='mb-3  flex justify-center' >
-					<button type="submit" className='px-8 py-2 font-bold  border text-white bg-[#00ccff]'><span className=''>Login</span></button>
 				</div>
+				<p className="text-center mt-8 ">Don't have account? <span className="text-blue-400 underline"><Link to='/register' >Register</Link></span> </p>
 			</form>
 		</div>
 	)

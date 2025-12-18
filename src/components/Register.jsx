@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import conf from '../config/config';
 
 
@@ -10,7 +10,8 @@ const Register = () => {
 		name: '', email: '', password: '', dob: '', city: '',
 	})
 
-	const [comfirmPassword, setComfirmPassword] = useState()
+	const [confirmPassword, setConfirmPassword] = useState()
+	confirmPassword
 	const navigate = useNavigate()
 
 	const handleChange = (e) => {
@@ -28,101 +29,126 @@ const Register = () => {
 			return
 		}
 
-		if (formData.password !== comfirmPassword) {
+		if (formData.password !== confirmPassword) {
 			alert('Password and Confirm password should be same')
 			return
 		}
 
-		console.log("1");
 
-		// Post req with axios
 		try {
-			console.log("3");
 
 			const res = await axios.post(`${conf.backendApIUrl}/api/v1/auth/register`, formData)
-			console.log("4");
 			alert(res.data.message)
 			if (res.data.status == 'success') {
 				navigate('/login')
 			}
-			console.log("2");
 
 		} catch (err) {
 			console.log("Error : " + err.message);
 		}
 	}
 
-	console.log(formData);
-	console.log(comfirmPassword);
-
 
 	return (
-		<div className='flex justify-center items-center h-screen'>
-			<form action="" onSubmit={handleSubmitForm} className='shadow-[0_0_10px_rgba(128,128,128)]  p-5 w-80 h-150 flex justify-between items-center flex-col'>
+		<div className="flex justify-center items-center h-screen bg-[#121212] text-white">
+			<form
+				onSubmit={handleSubmitForm}
+				className="bg-[#1f1f1f] border border-gray-700 px-8 py-4 rounded-xl  w-[500px] shadow-lg"
+			>
+				<h1 className="text-center text-3xl font-semibold font-serif text-blue-600 mb-4">
+					Register Form
+				</h1>
 
-				<h1 className='multicolor-text h-13 font-bold text-4xl '>Register</h1>
-
-				<div className=''>
-					<label htmlFor="" className='text-gray-700'>Enter Name</label>
-					<br />
-					<input type="text" name='name' className='text-xl border-2 rounded-lg py-1  px-4 mb-2' placeholder='enter name'
+				<div className="mb-3">
+					<label className="block text-lg font-serif mb-1">Name:</label>
+					<input
+						type="text"
+						name="name"
+						placeholder="Enter Name"
+						className="w-full border border-gray-600 rounded-md px-3 py-2 text-lg bg-[#2a2a2a] focus:outline-none  "
 						onChange={handleChange}
 						value={formData.name}
+						required
 					/>
 				</div>
 
-				<div className=''>
-					<label htmlFor="" className='text-gray-700'>Enter email</label>
-					<br />
-					<input type="text" name='email' className='text-xl border-2 rounded-lg py-1  px-4 mb-2' placeholder='Enter email'
+				<div className="mb-3">
+					<label className="block text-lg font-serif mb-1">Email:</label>
+					<input
+						type="email"
+						name="email"
+						placeholder="Enter Email"
+						className="w-full border border-gray-600 bg-[#2a2a2a] rounded-md px-3 py-2 text-lg focus:outline-none  "
 						onChange={handleChange}
 						value={formData.email}
+						required
 					/>
 				</div>
 
-				<div className=''>
-					<label htmlFor="" className='text-gray-700'>Enter dob</label>
-					<br />
-					<input type="date" name='dob' className='text-xl border-2 rounded-lg py-1  px-4 mb-2' placeholder='Enter Dob'
+				<div className="mb-3">
+					<label className="block text-lg font-serif mb-1">DOB:</label>
+					<input
+						type="date"
+						name="dob"
+						className="w-full border border-gray-600 bg-[#2a2a2a] rounded-md px-3 py-2 text-lg focus:outline-none  "
 						onChange={handleChange}
 						value={formData.dob}
+						required
 					/>
 				</div>
 
-				<div className=''>
-					<label htmlFor="" className='text-gray-700'>Enter city</label>
-					<br />
-					<input type="text" name='city' className='text-xl border-2 rounded-lg py-1  px-4 mb-2' placeholder='Enter city'
+				<div className="mb-3">
+					<label className="block text-lg font-serif mb-1">City:</label>
+					<input
+						type="text"
+						name="city"
+						placeholder="Enter Name"
+						className="w-full border border-gray-600 bg-[#2a2a2a] rounded-md px-3 py-2 text-lg focus:outline-none  "
 						onChange={handleChange}
 						value={formData.city}
+						required
 					/>
 				</div>
-				
-				<div className=''>
-					<label htmlFor="" className='text-gray-700'>Enter password</label>
-					<br />
-					<input type="text" name='password' className='text-xl border-2 rounded-lg py-1  px-4 m 2'
-						placeholder='*********'
+
+				<div className="mb-3">
+					<label className="block text-lg font-serif mb-1">Password:</label>
+					<input
+						type="password"
+						name="password"
+						placeholder="*****"
+						className="w-full border border-gray-600 bg-[#2a2a2a] rounded-md px-3 py-2 text-lg focus:outline-none  "
 						onChange={handleChange}
 						value={formData.password}
+						required
 					/>
 				</div>
 
-				<div className=''>
-					<label htmlFor="" className='text-gray-700'>Confirm password</label>
-					<br />
-					<input type="text" name='' className='text-xl border-2 rounded-lg py-1  px-4 m 2'
-						placeholder='*********'
-						onChange={(e) => setComfirmPassword(e.target.value)}
-						value={comfirmPassword}
+				<div className="mb-6">
+					<label className="block text-lg font-serif mb-1">Confirm Password:</label>
+					<input
+						type="password"
+						name="confirmPassword"
+						placeholder="*****"
+						className="w-full border border-gray-600 bg-[#2a2a2a] rounded-md px-3 py-2 text-lg focus:outline-none  "
+						onChange={(e) => setConfirmPassword(e.target.value)}
+						value={confirmPassword}
+						required
 					/>
 				</div>
 
-				<div className='mb-3  flex justify-center' >
-					<button type="submit" className='px-8 py-2 font-bold  border text-white bg-[#00ccff]'><span className=''>Register</span></button>
+				<div className='flex justify-center items-center'>
+					<button
+						type="submit"
+						className=" bg-blue-600 text-white p-2 pr-4 pl-4 rounded-md text-lg hover:bg-blue-700 transition font-serif"
+					>Register
+					</button>
+
 				</div>
+				<p className="text-center mt-5">Don't have account? <span className="text-blue-400 underline"><Link to='/login' >Login</Link></span> </p>
+
 			</form>
 		</div>
+
 	)
 }
 
