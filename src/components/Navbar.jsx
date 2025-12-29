@@ -25,14 +25,10 @@ const Navbar = () => {
 	const [profileMenuOpen, setProfileMenuOpen] = useState(false);
 	const [isSearching, setIsSearching] = useState(false);
 
-
-
-
 	const shortenText = (text, maxLength = 20) => {
 		if (!text) return "";
 		return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
 	};
-
 
 
 	return (
@@ -42,7 +38,7 @@ const Navbar = () => {
 				<h1 className='text-lg font-semibold tracking-wide  '>
 					Gemini
 				</h1>
-				<div className='bg-[#2a2a2a] flex justify-center w-fit  items-center text-sm font-bold border rounded-2xl px-1 pl-3 text-[gray]'>
+				<div className='bg-[#2a2a2a] flex justify-center w-fit items-center text-sm font-bold border rounded-2xl px-1 pl-3 text-[gray]'>
 					2.5 Flash
 					<div className=' flex justify-center items-center font-extrabold text-xl '>
 						<IoMdArrowDropdown />
@@ -84,11 +80,6 @@ const Navbar = () => {
 
 				}
 			</div> */}
-
-
-
-
-
 
 
 		</nav >

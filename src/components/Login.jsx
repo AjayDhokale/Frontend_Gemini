@@ -32,9 +32,9 @@ const Login = () => {
 
 
 		try {
-			const res = await axios.post(`${conf.backendApIUrl}/api/v1/auth/login`, formData)
+			const res = await axios.post(`/api/v1/auth/login`, formData)
 
-			alert(res.data.message)
+			// alert(res.data.message)
 
 			if (res.data.status === 'success') {
 				localStorage.setItem('token', res.data.token)

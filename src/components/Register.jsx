@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
-import conf from '../config/config';
 
 
 const Register = () => {
@@ -37,8 +36,8 @@ const Register = () => {
 
 		try {
 
-			const res = await axios.post(`${conf.backendApIUrl}/api/v1/auth/register`, formData)
-			alert(res.data.message)
+			const res = await axios.post(`/api/v1/auth/register`, formData)
+			// alert(res.data.message)
 			if (res.data.status == 'success') {
 				navigate('/login')
 			}
