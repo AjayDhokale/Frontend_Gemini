@@ -8,7 +8,6 @@ import ProtectedRoute from './components/ProtectedRoute.jsx'
 
 function App() {
 
-
   return (
     <BrowserRouter>
       <Routes>
@@ -26,8 +25,6 @@ function App() {
         </Route>
       </Routes>
     </BrowserRouter>
-
-
 
   )
 }

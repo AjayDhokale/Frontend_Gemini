@@ -2,10 +2,8 @@ import { useEffect, useId, useState } from 'react'
 import { IoSend } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { addMessage, setMessages } from "../features/messagesSlice";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { RiGeminiLine } from "react-icons/ri";
-import axios from 'axios';
-// import { createNewChatinDB, createNewMessageinDB, getChatOfUser, getGeminiResponse, getMessagesOfChat } from '../services/service';
 import { setChats } from '../features/chatSlice.js';
 import { chatService } from '../services/chatService.js';
 import { geminiService } from '../services/geminiService.js';

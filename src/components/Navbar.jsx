@@ -1,15 +1,8 @@
-import React, { useState } from 'react'
-import { FaUserAlt } from "react-icons/fa";
+import React from 'react'
 import { IoMdArrowDropdown } from "react-icons/io";
-import { CgMenuGridR } from "react-icons/cg";
-import { SiFiles } from "react-icons/si";
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom'
-import { logOutUser } from '../features/authSlice';
-import ProfileMenu from './ProfileMenu';
-import { TbSearch } from "react-icons/tb";
-import { IoClose } from "react-icons/io5";
+import { useSelector } from 'react-redux';
+
 
 
 

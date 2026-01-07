@@ -2,10 +2,7 @@ import React, { useState } from 'react'
 import { setUserData } from '../features/authSlice'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
-import { getChatOfUser } from '../services/123service'
 import { setChats } from '../features/chatSlice'
-import conf from '../config/config';
 import apiClient from '../services/apiClient'
 import { chatService } from '../services/chatService'
 

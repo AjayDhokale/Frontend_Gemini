@@ -7,7 +7,7 @@ const apiClient = axios.create({
     headers: { "Content-Type": "application/json" }
 })
 
-// Attach token automatically
+
 apiClient.interceptors.request.use((config) => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -16,7 +16,7 @@ apiClient.interceptors.request.use((config) => {
     return config
 });
 
-// Handle responses globally
+
 apiClient.interceptors.response.use(
     (response) => response.data,
     (error) => {
