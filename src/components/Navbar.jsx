@@ -22,8 +22,8 @@ const Navbar = () => {
 	const chat = chats.find(ch => ch._id == chatId)
 	const user = useSelector(state => state.auth.user)
 
-	const [profileMenuOpen, setProfileMenuOpen] = useState(false);
-	const [isSearching, setIsSearching] = useState(false);
+	// const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+	// const [isSearching, setIsSearching] = useState(false);
 
 	const shortenText = (text, maxLength = 20) => {
 		if (!text) return "";

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
+import apiClient from '../services/apiClient'
 
 
 const Register = () => {
@@ -33,10 +34,9 @@ const Register = () => {
 			return
 		}
 
-
 		try {
 
-			const res = await axios.post(`/api/v1/auth/register`, formData)
+			const res = await apiClient.post(`/auth/register`, formData)
 			// alert(res.data.message)
 			if (res.data.status == 'success') {
 				navigate('/login')
@@ -46,7 +46,6 @@ const Register = () => {
 			console.log("Error : " + err.message);
 		}
 	}
-
 
 	return (
 		<div className="flex justify-center items-center h-screen bg-[#121212] text-white">

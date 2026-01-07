@@ -5,8 +5,9 @@ import { Link } from 'react-router-dom';
 import { setMessages } from '../features/messagesSlice'
 import { deleteChat as deleteChatSlice, renameChats as renameChatsSlice } from '../features/chatSlice'
 
-import { deleteChatAndMessagesinDB, renameChatinDB } from '../services/service';
+// import { deleteChatAndMessagesinDB, renameChatinDB } from '../services/service';
 import ProfileMenu from './ProfileMenu';
+import { chatService } from '../services/chatService';
 
 
 const SidebarLayout = () => {
@@ -51,7 +52,7 @@ const SidebarLayout = () => {
     const saveRename = async () => {
 
         if (!renameChatId || !renameText) return;
-        const updatedChat = await renameChatinDB(renameChatId, renameText)
+        const updatedChat = await chatService.renameChatinDB(renameChatId, renameText)
 
         if (!updatedChat) return;
         dispatch(renameChatsSlice(updatedChat))
@@ -62,7 +63,7 @@ const SidebarLayout = () => {
     }
 
     const deleteChatAndMessages = async (chat) => {
-        const deleted = await deleteChatAndMessagesinDB(chat._id)
+        const deleted = await chatService.deleteChatAndMessagesinDB(chat._id)
 
         dispatch(deleteChatSlice(deleted.chatId))
         setOpenMenuId(null)

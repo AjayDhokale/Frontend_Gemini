@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
 import { useDispatch, useSelector } from "react-redux";
-import { getChatOfUser } from "../services/service";
 import { setChats } from "../features/chatSlice";
 import SidebarLayout from "./SidebarLayout";
 import { isTokenExpired } from "../utils/isTokenExpired";
+import { chatService } from "../services/chatService";
 
 
 const MainLayout = () => {
@@ -18,10 +18,10 @@ const MainLayout = () => {
 			dispatch(logOutUser());
 			return;
 		}
-	
+
 
 		const loadChats = async () => {
-			const chats = await getChatOfUser();
+			const chats = await chatService.getChatOfUser();
 			dispatch(setChats(Array.isArray(chats) ? chats : []));
 		};
 

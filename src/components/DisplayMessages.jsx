@@ -3,11 +3,15 @@ import { IoSend } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { addMessage, setMessages } from "../features/messagesSlice";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { marked } from "marked";
 import { RiGeminiLine } from "react-icons/ri";
 import axios from 'axios';
-import { createNewChatinDB, createNewMessageinDB, getChatOfUser, getGeminiResponse, getMessagesOfChat } from '../services/service';
+// import { createNewChatinDB, createNewMessageinDB, getChatOfUser, getGeminiResponse, getMessagesOfChat } from '../services/service';
 import { setChats } from '../features/chatSlice.js';
+import { chatService } from '../services/chatService.js';
+import { geminiService } from '../services/geminiService.js';
+import { messageService } from '../services/messageService.js';
+
+
 
 const DisplayMessages = () => {
 
@@ -28,11 +32,11 @@ const DisplayMessages = () => {
 		if (!chatId) return		
 
 		(async () => {
-			const usersChats = await getChatOfUser()
+			const usersChats = await chatService.getChatOfUser()
 		
 			dispatch(setChats(usersChats))
 
-			const userMessages = await getMessagesOfChat(chatId)
+			const userMessages = await messageService.getMessagesOfChat(chatId)
 			dispatch(setMessages(userMessages || []));
 
 		})()
@@ -53,9 +57,9 @@ const DisplayMessages = () => {
 
 			if (!currentChatId) {
 
-				const newChatObj = await createNewChatinDB(userMsg);
+				const newChatObj = await chatService.createNewChatinDB(userMsg);
 
-				const updatedChatList = await getChatOfUser();
+				const updatedChatList = await chatService.getChatOfUser();
 				dispatch(setChats(updatedChatList));
 
 				currentChatId = newChatObj._id;
@@ -69,9 +73,9 @@ const DisplayMessages = () => {
 			}));
 
 			// Store user message in DB
-			await createNewMessageinDB(userMsg, currentChatId, false);
+			await messageService.createNewMessageinDB(userMsg, currentChatId, false);
 
-			const answer = await getGeminiResponse(userMsg);
+			const answer = await  geminiService.getGeminiResponse(userMsg);
 			const htmlAns = answer;
 
 			dispatch(addMessage({
@@ -80,7 +84,7 @@ const DisplayMessages = () => {
 				_id: Date.now() + 1
 			}));
 
-			await createNewMessageinDB(htmlAns, currentChatId, true);
+			await messageService.createNewMessageinDB(htmlAns, currentChatId, true);
 
 		}
 		catch (err) {
@@ -135,7 +139,7 @@ const DisplayMessages = () => {
 			{/* Input Section */}
 			<div className=' w-full  flex justify-center '>
 
-				<form onSubmit={handleSubmit} className='w-full  flex justify-center  items-center gap-4 p-3'>
+				<form onSubmit={handleSubmit} className='w-full  flex justify-center items-center gap-4 p-3'>
 					<input
 						type="text"
 						name='userInput'

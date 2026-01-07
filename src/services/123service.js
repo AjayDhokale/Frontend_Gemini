@@ -5,6 +5,7 @@ import conf from '../config/config';
 
 
 let API_Key = conf.geminiApiKey
+let backendApIUrl = conf.backendApIUrl
 
 const ai = new GoogleGenAI({ apiKey: API_Key });
 
@@ -14,7 +15,7 @@ export const getGeminiResponse = async (question) => {
         contents: question,
     });
     const output = response.text;  
-    const parsedResponse = await marked.parse(output)
+    const parsedResponse = marked.parse(output)
     return parsedResponse;
 }
 
@@ -36,7 +37,7 @@ export const createNewChatinDB = async (name) => {
     }
 
     try {
-        const res = await axios.post(`/api/v1/chats/create-chat`, data, config);
+        const res = await axios.post(`${backendApIUrl}/api/v1/chats/create-chat`, data, config);
 
         if (res.data.status == 'success') {
             return res.data.data;
@@ -69,7 +70,7 @@ export const renameChatinDB = async (id, name) => {
 
     try {
 
-        const res = await axios.put(`/api/v1/chats/rename-chat`, data, config)
+        const res = await axios.put(`${backendApIUrl}/api/v1/chats/rename-chat`, data, config)
 
         if (res.data.status == 'success') {
             return res.data.data;
@@ -102,7 +103,7 @@ export const createNewMessageinDB = async (text, chatId, isGeminiResponse) => {
     let data = { text, chatId, isGeminiResponse }     
 
     try {
-        const res = await axios.post(`/api/v1/messages/create-message`, data, config);
+        const res = await axios.post(`${backendApIUrl}/api/v1/messages/create-message`, data, config);
 
         if (res.data.status == 'success') {
             return res.data.data;
@@ -114,7 +115,7 @@ export const createNewMessageinDB = async (text, chatId, isGeminiResponse) => {
     }
 }
 
-export const getChatOfUser = async (text, chatId, isGeminiResponse) => {
+export const getChatOfUser = async () => {
 
     let token = localStorage.getItem('token');
     if (!token) return false;
@@ -126,7 +127,7 @@ export const getChatOfUser = async (text, chatId, isGeminiResponse) => {
     }
 
     try {
-        const res = await axios.get(`/api/v1/chats/get-chats`, config);
+        const res = await axios.get(`${backendApIUrl}/api/v1/chats/get-chats`, config);
         if (res.data.status == 'success') {
             return res.data.data;
         } else {
@@ -151,7 +152,7 @@ export const getMessagesOfChat = async (chatId) => {
     }
 
     try {
-        const res = await axios.get(`/api/v1/messages/get-all-messages/${chatId}`, config);
+        const res = await axios.get(`${backendApIUrl}/api/v1/messages/get-all-messages/${chatId}`, config);
 
         if (res.data.status == 'success') {
             return res.data.data;
@@ -176,7 +177,7 @@ export const deleteChatAndMessagesinDB = async (chatId) => {
     }
 
     try {
-        const res = await axios.delete(`/api/v1/chats/delete-chat/${chatId}`, config);
+        const res = await axios.delete(`${backendApIUrl}/api/v1/chats/delete-chat/${chatId}`, config);
 
         if (res.data.status == 'success') {
             

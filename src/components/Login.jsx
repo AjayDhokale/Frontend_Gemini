@@ -3,9 +3,11 @@ import { setUserData } from '../features/authSlice'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { getChatOfUser } from '../services/service'
+import { getChatOfUser } from '../services/123service'
 import { setChats } from '../features/chatSlice'
 import conf from '../config/config';
+import apiClient from '../services/apiClient'
+import { chatService } from '../services/chatService'
 
 
 const Login = () => {
@@ -30,24 +32,24 @@ const Login = () => {
 	const handleSubmitForm = async (e) => {
 		e.preventDefault()
 
-
 		try {
-			const res = await axios.post(`/api/v1/auth/login`, formData)
+			const res = await apiClient.post(`/auth/login`, formData)
 
+			console.log(res)
 			// alert(res.data.message)
 
-			if (res.data.status === 'success') {
-				localStorage.setItem('token', res.data.token)
-				localStorage.setItem('user', JSON.stringify(res.data.data))
+			if (res?.token) {
+				localStorage.setItem('token', res.token)
+				localStorage.setItem('user', JSON.stringify(res.data))
 
 				const userData = {
-					user: res.data.data,
-					token: res.data.token,
+					user: res.data,
+					token: res.token,
 				}
 
 				dispatch(setUserData(userData))
 
-				const usersChats = await getChatOfUser()
+				const usersChats = await chatService.getChatOfUser()
 				dispatch(setChats(usersChats))
 				navigate('/new-chat')
 
@@ -59,7 +61,6 @@ const Login = () => {
 			console.error('Error: ' + err.message);
 
 		}
-
 
 	}
 
